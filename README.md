@@ -6,7 +6,15 @@ Make your concrete5 site scalable with Memcache!
 
 1. Upload `application/src` directory to your concrete5 site
 
-2. Modify your `application/config/concrete.php`
+2. Register a class override in your `application/bootstrap/app.php`
+
+```php
+Core::singleton('session', function() {
+    return Application\Src\Session\Session::start();
+});
+```
+
+3. Modify your `application/config/concrete.php`
 
 ```php
 return array(
@@ -37,12 +45,4 @@ return array(
         ),
     ),
 );
-```
-
-3. Register a class override in your `application/bootstrap/app.php`
-
-```php
-Core::singleton('session', function() {
-    return Application\Src\Session\Session::start();
-});
 ```
