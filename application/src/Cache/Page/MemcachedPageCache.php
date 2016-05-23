@@ -15,7 +15,7 @@ class MemcachedPageCache extends PageCache
     public function __construct()
     {
         $driver = new Memcache();
-        $driver->setOptions(Config::get('concrete.cache.memcached'));
+        $driver->setOptions(Config::get('concrete.cache.page.memcached'));
 
         self::$pool = new Pool($driver);
     }

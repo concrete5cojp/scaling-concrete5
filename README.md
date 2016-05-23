@@ -35,12 +35,12 @@ return array(
         'overrides' => false,
         'page' => array(
             'adapter' => 'memcached',
-        ),
-        'memcached' => array(
-            'servers' => array(
-                array(
-                    'host' => 'example.domain.of.memcache.cache.amazonaws.com',
-                    'port' => '11211',
+            'memcached' => array(
+                'servers' => array(
+                    array(
+                        'host' => 'example.domain.of.memcache.cache.amazonaws.com',
+                        'port' => '11211',
+                    ),
                 ),
             ),
         ),
