@@ -1,10 +1,10 @@
 <?php
-namespace Application\Src\Session;
+namespace Application\Concrete\Session;
 
 use Concrete\Core\Application\Application;
 use Concrete\Core\Http\Request;
-use Illuminate\Config\Repository;
 use Concrete\Core\Session\SessionFactoryInterface;
+use Illuminate\Config\Repository;
 use Concrete\Core\Session\Storage\Handler\NativeFileSessionHandler;
 use Symfony\Component\HttpFoundation\Session\Storage\Handler\MemcachedSessionHandler;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
@@ -13,8 +13,9 @@ use Symfony\Component\HttpFoundation\Session\Session as SymfonySession;
 
 /**
  * Class SessionFactory
- * Customized concrete5 session factory
- * @package Concrete\Core\Session
+ * Base concrete5 session factory.
+ *
+ * \@package Concrete\Core\Session
  */
 class SessionFactory implements SessionFactoryInterface
 {
@@ -32,7 +33,7 @@ class SessionFactory implements SessionFactoryInterface
 
     /**
      * Create a new symfony session object
-     * This method MUST NOT start the session
+     * This method MUST NOT start the session.
      *
      * @return \Symfony\Component\HttpFoundation\Session\Session
      */
@@ -44,7 +45,7 @@ class SessionFactory implements SessionFactoryInterface
         $session = new SymfonySession($storage);
         $session->setName($config->get('concrete.session.name'));
 
-        /**
+        /*
          * @todo Move this to somewhere else
          */
         $this->request->setSession($session);
@@ -54,6 +55,7 @@ class SessionFactory implements SessionFactoryInterface
 
     /**
      * @param \Illuminate\Config\Repository $config
+     *
      * @return \Symfony\Component\HttpFoundation\Session\Storage\SessionStorageInterface
      */
     private function getSessionStorage(Repository $config)
@@ -71,7 +73,9 @@ class SessionFactory implements SessionFactoryInterface
             if ($options['cookie_path'] === false) {
                 $options['cookie_path'] = $app['app_relative_path'] . '/';
             }
-            $options['gc_maxlifetime'] = $config->get('concrete.session.max_lifetime');
+
+            $lifetime = $config->get('concrete.session.max_lifetime');
+            $options['gc_maxlifetime'] = $lifetime;
             $storage->setOptions($options);
         }
 
@@ -80,6 +84,7 @@ class SessionFactory implements SessionFactoryInterface
 
     /**
      * @param \Illuminate\Config\Repository $config
+     *
      * @return \SessionHandlerInterface
      */
     private function getSessionHandler(Repository $config)

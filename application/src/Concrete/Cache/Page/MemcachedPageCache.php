@@ -1,11 +1,11 @@
 <?php
-namespace Application\Src\Cache\Page;
+namespace Application\Concrete\Cache\Page;
 
 use Concrete\Core\Cache\Page\PageCache;
 use Concrete\Core\Cache\Page\PageCacheRecord;
 use Stash\Driver\Memcache;
 use Stash\Pool;
-use Page as ConcretePage;
+use Concrete\Core\Page\Page as ConcretePage;
 use Config;
 
 class MemcachedPageCache extends PageCache
@@ -14,12 +14,11 @@ class MemcachedPageCache extends PageCache
 
     public function __construct()
     {
-        $driver = new Memcache();
-        $driver->setOptions(Config::get('concrete.cache.page.memcached'));
+        $driver = new Memcache(Config::get('concrete.cache.page.memcached'));
 
         self::$pool = new Pool($driver);
     }
-    
+
     public function getRecord($mixed)
     {
         $item = $this->getCacheItem($mixed);
@@ -40,6 +39,7 @@ class MemcachedPageCache extends PageCache
             $lifetime = $c->getCollectionFullPageCachingLifetimeValue();
             $response = new PageCacheRecord($c, $content, $lifetime);
             $item->set($response);
+            self::$pool->save($item);
         }
     }
 
@@ -61,9 +61,13 @@ class MemcachedPageCache extends PageCache
 
     public function flush()
     {
-        self::$pool->flush();
+        self::$pool->clear();
     }
 
+    /**
+     * @param $mixed
+     * @return \Stash\Interfaces\ItemInterface
+     */
     protected function getCacheItem($mixed)
     {
         $key = $this->getCacheKey($mixed);
