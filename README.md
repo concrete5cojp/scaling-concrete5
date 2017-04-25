@@ -2,7 +2,7 @@
 
 Make your concrete5 site scalable with Memcache!
 
-Works on concrete5 version 7.5.4+
+Works on concrete5 version 8+
 
 ## How to setup
 
@@ -11,39 +11,37 @@ Works on concrete5 version 7.5.4+
 2. Register a class override in your `application/bootstrap/app.php`
 
     ```php
-    Core::bind('Concrete\Core\Session\SessionFactoryInterface', 'Application\Src\Session\SessionFactory');
+    $app->bind('Concrete\Core\Session\SessionFactoryInterface', 'Application\Concrete\Session\SessionFactory');
     ```
 
 3. Modify your `application/config/concrete.php`
 
-    ```php
-    return array(
-        // Change session handler to memcache
-        'session' => array(
+    ```php<?phpphp
+    
+    return [
+        'session' => [
             'handler' => 'memcached',
-            'memcached' => array(
-                'servers' => array(
-                    array(
-                        'host' => 'example.domain.of.memcache.cache.amazonaws.com',
-                        'port' => '11211',
-                    ),
-                ),
-            ),
-        ),
-        // Change full page caching adapter to memcache
-        'cache' => array(
-            'overrides' => false,
-            'page' => array(
+            'memcached' => [
+                'servers' => [
+                    [
+                        'host' => '127.0.0.1',
+                        'port' => 11211,
+                    ],
+                ],
+            ],
+        ],
+        'cache' => [
+            'page' => [
                 'adapter' => 'memcached',
-                'memcached' => array(
-                    'servers' => array(
-                        array(
-                            'host' => 'example.domain.of.memcache.cache.amazonaws.com',
-                            'port' => '11211',
-                        ),
-                    ),
-                ),
-            ),
-        ),
-    );
+                'memcached' => [
+                    'servers' => [
+                        [
+                            'host' => '127.0.0.1',
+                            'port' => 11211,
+                        ],
+                    ],
+                ],
+            ],
+        ],
+    ];
     ```
