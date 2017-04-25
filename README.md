@@ -16,7 +16,8 @@ Works on concrete5 version 8+
 
 3. Modify your `application/config/concrete.php`
 
-    ```php<?phpphp
+    ```php
+    <?php
     
     return [
         'session' => [
