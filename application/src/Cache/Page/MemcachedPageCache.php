@@ -5,7 +5,7 @@ use Concrete\Core\Cache\Page\PageCache;
 use Concrete\Core\Cache\Page\PageCacheRecord;
 use Stash\Driver\Memcache;
 use Stash\Pool;
-use Page as ConcretePage;
+use Concrete\Core\Page\Page as ConcretePage;
 use Config;
 
 class MemcachedPageCache extends PageCache
